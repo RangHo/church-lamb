@@ -44,7 +44,7 @@ x
 > **Syntax** \
 > `<function definition> ::= '\' <identifier> '.' <expression>`
 
-A _function definition_ create a new function. While traditionally a function is
+A _function definition_ creates a new function. While traditionally a function is
 typeset with a Greek letter lambda(`λ`), here it is replaced with a backslash
 character(`\`) as it is much more convenient to type on regular keyboard while
 having similar appearance.
