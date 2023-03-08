@@ -23,9 +23,21 @@ information, see the corresponding sections below.
 ### Identifier
 
 An _identifier_ is a string of alphanumeric (including underbar) characters. It
-may serve the role of an _atom_ or a _variable_. If the identifier is _bound_;
-i.e. 
+may serve the role of an _atom_ or a _variable_. If the identifier is _bound_,
+i.e., the identifier is already defined elsewhere, either as an argument or as a
+global alias, it behaves as a variable holding a value. Otherwise, it acts like
+an atom, where the value of the identifier is the identifier itself.
 
+#### Example
+
+```
+# This is an example of an identifier used as an atom
+x
+
+# The `f` in the inner function is an identifier used as a variable as it is
+# bound by the outer function's argument `f`
+\f.\x.(f x)
+```
 
 ### Function definitions
 
@@ -38,8 +50,7 @@ character(`\`) as it is much more convenient to type on regular keyboard while
 having similar appearance.
 
 Note that this expression is right-associative. Before pairing with the argument
-identifier, the body of the function will be
-
+identifier, the body of the function will be processed.
 
 #### Example
 
