@@ -15,7 +15,7 @@ utility classes that make up these concepts.
 ### Expressions
 
 > **Syntax** \
-> `<expression> ::= <identifier> | <function definition> | '(' <function application> ')'`
+> `<expression> ::= <identifier> | <function definition> | <function application> | <expression group>`
 
 An _expression_ is the smallest standalone "thing" that has a value. For more
 information, see the corresponding sections below.
@@ -73,6 +73,27 @@ identifier, the body of the function will be processed.
 A _function application_ expression takes the first expression as the function,
 and the second expression as the argument. And the function expression is then
 evaluated with the argument expression.
+
+### Expression group
+
+> **Syntax** \
+> `<expression group> ::= '(' <expression> ')' `
+
+An _expression group_ expression groups an expression into a group, forcing an
+alternative evaluation order. This is useful when creating a function with
+function application statement as its body.
+
+#### Example
+
+```
+# Function with an expression group
+# This expression is the self-application function
+\s.(s s)
+
+# Function without an expression group
+# This expression is an atom `s` applied to the identity function
+\s.s s
+```
 
 ### Comments
 
