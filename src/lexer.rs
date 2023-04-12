@@ -27,7 +27,7 @@ impl<'a> Lexer<'a> {
         let mut tokens = Vec::new();
         let mut is_eof = false;
         while !is_eof {
-            let token = self.lex_next();
+            let token = self.lex();
             if token == Token::EOF {
                 is_eof = true;
             }
@@ -37,7 +37,7 @@ impl<'a> Lexer<'a> {
         tokens
     }
 
-    pub fn lex_next(&mut self) -> Token {
+    pub fn lex(&mut self) -> Token {
         let next_char = self.input.peek();
 
         match next_char {
@@ -119,5 +119,5 @@ fn is_newline(c: &char) -> bool {
 }
 
 fn is_punctuation(c: &char) -> bool {
-    *c == '\\' || *c == '.'
+    *c == '\\' || *c == '.' || *c == '(' || *c == ')'
 }
