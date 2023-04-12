@@ -13,6 +13,7 @@ pub enum Token {
     Space,
     Newline,
     EOF,
+    Comment(String),
 }
 
 impl<'a> Lexer<'a> {
@@ -40,10 +41,11 @@ impl<'a> Lexer<'a> {
         let next_char = self.input.peek();
 
         match next_char {
-            Some(x) if is_whitespace(x) => self.lex_whitespace(),
             Some(x) if is_punctuation(x) => self.lex_punctuation(),
+            Some(x) if is_whitespace(x) => self.lex_whitespace(),
+            Some(x) if is_newline(x) => self.lex_newline(),
             Some(x) if x.is_alphabetic() => self.lex_identifier(),
-            Some('\n') => self.lex_newline(),
+            Some('#') => self.lex_comment(),
             None => self.lex_eof(),
             _ => panic!("Unexpected character: {:?}", next_char),
         }
@@ -91,10 +93,29 @@ impl<'a> Lexer<'a> {
     fn lex_eof(&mut self) -> Token {
         Token::EOF
     }
+
+    fn lex_comment(&mut self) -> Token {
+        // Consume the pound character
+        self.input.next();
+
+        let mut comment = String::new();
+        while let Some(x) = self.input.peek() {
+            if is_newline(x) {
+                break;
+            }
+            comment.push(*x);
+            self.input.next();
+        }
+        Token::Comment(comment)
+    }
 }
 
 fn is_whitespace(c: &char) -> bool {
     *c == ' ' || *c == '\t' || *c == '\r'
+}
+
+fn is_newline(c: &char) -> bool {
+    *c == '\n'
 }
 
 fn is_punctuation(c: &char) -> bool {
