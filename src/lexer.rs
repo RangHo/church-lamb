@@ -10,7 +10,6 @@ pub struct Lexer<'a> {
 pub enum Token {
     Identifier(String),
     Punctuation(String),
-    Space,
     Newline,
     EOF,
     Comment(String),
@@ -42,35 +41,20 @@ impl<'a> Lexer<'a> {
 
         match next_char {
             Some(x) if is_punctuation(x) => self.lex_punctuation(),
-            Some(x) if is_whitespace(x) => self.lex_whitespace(),
             Some(x) if is_newline(x) => self.lex_newline(),
             Some(x) if x.is_alphabetic() => self.lex_identifier(),
+            Some(x) if is_whitespace(x) => {
+                self.input.next();
+                self.lex()
+            }
             Some('#') => self.lex_comment(),
             None => self.lex_eof(),
             _ => panic!("Unexpected character: {:?}", next_char),
         }
     }
 
-    fn lex_whitespace(&mut self) -> Token {
-        while let Some(x) = self.input.peek() {
-            if !is_whitespace(x) {
-                break;
-            }
-            self.input.next();
-        }
-        Token::Space
-    }
-
     fn lex_punctuation(&mut self) -> Token {
-        let mut punctuation = String::new();
-        while let Some(x) = self.input.peek() {
-            if !is_punctuation(x) {
-                break;
-            }
-            punctuation.push(*x);
-            self.input.next();
-        }
-        Token::Punctuation(punctuation)
+        Token::Punctuation(self.input.next().unwrap().to_string())
     }
 
     fn lex_identifier(&mut self) -> Token {
