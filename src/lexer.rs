@@ -1,12 +1,29 @@
 use std::iter::Peekable;
 use std::str::Chars;
 
+/// Lexer object.
+///
+/// This struct is used to tokenize a raw string input into a set of tokens.
+///
+/// # Examples
+///
+/// ```rust
+/// // Create a new lexer object
+/// let mut lexer = Lexer::new("\x.x");
+///
+/// // Tokenize one token
+/// let token = lexer.lex();
+///
+/// // Tokenize until the end of string
+/// let tokens = lexer.lex_all();
+/// ```
 #[derive(Debug)]
 pub struct Lexer<'a> {
     input: Peekable<Chars<'a>>,
 }
 
-#[derive(Debug, PartialEq)]
+/// The token type.
+#[derive(Debug, PartialEq, Clone)]
 pub enum Token {
     Identifier(String),
     Punctuation(String),
